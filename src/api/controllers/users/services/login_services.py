@@ -10,7 +10,7 @@ import jwt
 from setup import jwt_handler
 from api.dependencies.connections import get_repository
 from database.repositories import UserRepository
-from domain.authentication import RegisterService, LoginService
+from domain.users import RegisterService, LoginService
 from domain.exceptions import SecurityError
 from ..schemas import UserTokensResponseSchema
 

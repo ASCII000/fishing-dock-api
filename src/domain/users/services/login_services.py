@@ -2,6 +2,8 @@
 Login and JWT controll Users
 """
 
+import jwt
+
 from typing import TypedDict
 
 from setup import jwt_handler, config
@@ -91,7 +93,13 @@ class LoginService:
             UserToken: Access and refresh token
         """
 
-        payload = jwt_handler.decode_payload(refresh_token)
+        try:
+
+            payload = jwt_handler.decode_payload(refresh_token)
+
+        except (jwt.DecodeError, jwt.InvalidTokenError, jwt.ExpiredSignatureError) as err:
+            raise SecurityError("Token inválido.") from err
+
         if payload["tipo"] != "REFRESH":
             raise SecurityError("Token inválido.")
 
