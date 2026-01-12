@@ -1,25 +1,21 @@
-name: Bateria de testes
+name: Run Tests
 
 on:
   pull_request:
-    branches:
-      - main
+    branches: [ main, develop ]
   workflow_dispatch: {}
 
 jobs:
   tests:
-    name: Pytest (Poetry)
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-          cache: "poetry"
 
       - name: Install Poetry
         uses: snok/install-poetry@v1
