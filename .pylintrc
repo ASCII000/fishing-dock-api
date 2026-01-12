@@ -1,0 +1,14 @@
+[MASTER]
+init-hook='import sys; sys.path.append("./src")'
+
+[MESSAGES CONTROL]
+disable=
+    broad-exception-caught,
+    no-self-argument,
+    unused-argument,
+    unused-variable,
+    arguments-renamed,
+    unused-import,
+
+[FORMAT]
+max-line-length=300
