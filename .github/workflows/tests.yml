@@ -16,18 +16,14 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+          cache: "pip"
 
-      - name: Install Poetry
-        uses: snok/install-poetry@v1
-        with:
-          version: "1.8.2"
-          virtualenvs-create: true
-          virtualenvs-in-project: true
-
-      - name: Install dependencies
+      - name: Install project
         run: |
-          poetry install --no-interaction --no-root
+          pip install --upgrade pip
+          pip install -e .
+          pip install pytest pytest-asyncio
 
       - name: Run tests
         run: |
-          bash scripts/run_tests.bash
+          bash tests/run_tests.sh
