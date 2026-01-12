@@ -14,7 +14,7 @@ from domain.exceptions import DuplicateException
 from ..schemas import UserRequestSchema, UserTokensResponseSchema
 
 
-class UserController:
+class RegisterController:
     """
     User service
     """

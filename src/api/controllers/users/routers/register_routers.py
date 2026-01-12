@@ -4,7 +4,7 @@ Routers for register Api Domain
 
 from fastapi import APIRouter, Depends
 from ..schemas import UserRequestSchema, UserTokensResponseSchema
-from ..services import UserController
+from ..services import RegisterController
 
 
 router = APIRouter()
@@ -13,7 +13,7 @@ router = APIRouter()
 @router.post("")
 async def create_user(
     user: UserRequestSchema,
-    controller: UserController = Depends()
+    controller: RegisterController = Depends()
 ) -> UserTokensResponseSchema:
     """
     Create user

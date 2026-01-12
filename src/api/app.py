@@ -6,7 +6,7 @@ from fastapi import FastAPI
 
 from setup import config
 from .dependencies.lifespan import lifespan
-from .controllers.users import register_router
+from .controllers.users import setup_users_controllers
 
 
 app = FastAPI(
@@ -16,4 +16,4 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-app.include_router(register_router, prefix="/users", tags=["Usuários"])
+setup_users_controllers(app)
