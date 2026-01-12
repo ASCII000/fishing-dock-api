@@ -1,0 +1,40 @@
+[project]
+name = "fishing-dock-api"
+version = "0.0.1"
+description = "Fishing Dock API for review Video Games"
+authors = [
+    {name = "Emerson Silva"}
+]
+license = {text = "MIT 1.0"}
+readme = "README.md"
+requires-python = ">=3.11,<4.0"
+dependencies = [
+    "python-dotenv (>=1.2.1,<2.0.0)",
+    "loguru (>=0.7.3,<0.8.0)",
+    "pyjwt (>=2.10.1,<3.0.0)",
+    "fastapi (>=0.128.0,<0.129.0)",
+    "uvicorn (>=0.40.0,<0.41.0)",
+    "sqlmodel (>=0.0.31,<0.0.32)",
+    "aiosqlite (>=0.22.1,<0.23.0)",
+    "pytest-asyncio (>=1.3.0,<2.0.0)",
+    "pytest (>=9.0.2,<10.0.0)",
+    "httpx (>=0.28.1,<0.29.0)"
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+package-mode = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+[dependency-groups]
+dev = [
+    "httpx (>=0.28.1,<0.29.0)"
+]
