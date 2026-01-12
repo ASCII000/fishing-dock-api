@@ -20,9 +20,8 @@ jobs:
 
       - name: Install project
         run: |
-          pip install --upgrade pip
-          pip install -e .
-          pip install pytest pytest-asyncio
+          pip install poetry
+          poetry install
 
       - name: Run tests
         run: |
