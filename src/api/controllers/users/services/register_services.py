@@ -4,13 +4,12 @@ Register services
 
 import uuid
 
-from fastapi import Depends, status
-from fastapi.exceptions import HTTPException
+from fastapi import Depends
 
 from api.dependencies.connections import get_repository
-from database.repositories import UserRepository, UserEntity
+from database.repositories import UserRepository
+from domain.entities import UserEntity
 from domain.users import RegisterService, LoginService
-from domain.exceptions import DuplicateException
 from ..schemas import UserRequestSchema, UserTokensResponseSchema
 
 
@@ -31,31 +30,22 @@ class RegisterController:
         """
         Method for create user
         """
+        # Create user entity
+        user_entity = UserEntity(
+            email=user.email,
+            nome=user.nome,
+            telefone=user.telefone,
+            uuid=str(uuid.uuid4()),
+            imagem_perfil=None,
+            ativo=True,
+            excluido=False,
+        )
 
-        try:
+        # Set user password
+        user_entity.set_password(user.senha)
 
-            # Create user entity
-            user_entity = UserEntity(
-                email=user.email,
-                nome=user.nome,
-                telefone=user.telefone,
-                uuid=str(uuid.uuid4()),
-                imagem_perfil=None,
-                ativo=True,
-                excluido=False,
-            )
-
-            # Set user password
-            user_entity.set_password(user.senha)
-
-            # Create user
-            created_user = await self.register_service.create_new_user(user_entity)
-
-        except DuplicateException as err:
-            raise HTTPException(
-                status_code=status.HTTP_409_CONFLICT,
-                detail=err.message,
-            ) from err
+        # Create user
+        created_user = await self.register_service.create_new_user(user_entity)
 
         # Generate tokens
         tokens = await self.login_service.login(

@@ -2,6 +2,8 @@
 Lifespan dependencies
 """
 
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 
 import sqlmodel
@@ -12,6 +14,7 @@ from sqlalchemy.orm import sessionmaker
 from setup import config
 
 
+@asynccontextmanager
 async def lifespan(app: FastAPI):
     """
     Lifespan dependencies
