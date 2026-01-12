@@ -9,7 +9,7 @@ from fastapi.exceptions import HTTPException
 
 from api.dependencies.connections import get_repository
 from database.repositories import UserRepository, UserEntity
-from domain.authentication import RegisterService, LoginService
+from domain.users import RegisterService, LoginService
 from domain.exceptions import DuplicateException
 from ..schemas import UserRequestSchema, UserTokensResponseSchema
 
