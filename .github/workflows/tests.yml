@@ -22,6 +22,10 @@ jobs:
           pip install poetry
           poetry install
 
+      - name: Inject .env Project values
+        run: |
+          mv .env.example .env
+
       - name: Run tests
         run: |
           poetry run pytest -vv
