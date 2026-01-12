@@ -44,6 +44,9 @@ class LoginService:
 
         Returns:
             UserToken: Access and refresh token
+        
+        Raises:
+            SecurityError: Exception for security error
         """
 
         user = await self.repo.get_by_email(email)
@@ -89,6 +92,9 @@ class LoginService:
         """
 
         payload = jwt_handler.decode_payload(refresh_token)
+        if payload["tipo"] != "REFRESH":
+            raise SecurityError("Token inválido.")
+
         user = await self.repo.get_by_uuid(payload["sub"])
 
         access_token = {
