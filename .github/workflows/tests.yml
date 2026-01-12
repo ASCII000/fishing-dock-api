@@ -1,12 +1,9 @@
 name: Bateria de testes
 
 on:
-  workflow_dispatch:
-    inputs:
-      reason:
-        description: "Motivo para rodar os testes"
-        required: false
-        default: "manual run"
+  pull_request:
+    branches: [ main ]
+
 jobs:
   tests:
     runs-on: ubuntu-latest
