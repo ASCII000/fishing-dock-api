@@ -24,4 +24,4 @@ jobs:
 
       - name: Run tests
         run: |
-          pytest -vv
+          poetry run pytest -vv
