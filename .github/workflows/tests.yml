@@ -20,10 +20,8 @@ jobs:
       - name: Install project
         run: |
           pip install poetry
-          pip install pytest
-          pip install pytest-asyncio
           poetry install
 
       - name: Run tests
         run: |
-          python -m pytest ./tests
+          pytest
