@@ -7,7 +7,7 @@ from fastapi import Depends
 from setup import jwt_handler
 from api.dependencies.connections import get_repository
 from database.repositories import UserRepository
-from domain.users import LoginService
+from domain.services.users import LoginService
 from ..schemas import UserTokensResponseSchema
 
 
