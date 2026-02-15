@@ -66,7 +66,7 @@ class UserRepository(IUserRepository):
         model.nome = user.nome
         model.email = user.email
         model.telefone = user.telefone
-        model.imagem_perfil = user.imagem_perfil
+        model.avatar_url = user.avatar_url
         model.ativo = user.ativo
         model.excluido = user.excluido
         model.senha = user.get_password_hash()
@@ -84,7 +84,6 @@ class UserRepository(IUserRepository):
             ativo=model.ativo,
             email=model.email,
             excluido=model.excluido,
-            imagem_perfil=model.imagem_perfil,
             telefone=model.telefone,
             uuid=model.uuid,
             _senha_hash=model.senha
@@ -99,8 +98,8 @@ class UserRepository(IUserRepository):
             nome=entity.nome,
             ativo=entity.ativo,
             email=entity.email,
+            avatar_url=entity.avatar_url,
             excluido=entity.excluido,
-            imagem_perfil=entity.imagem_perfil,
             telefone=entity.telefone,
             uuid=entity.uuid,
             senha=entity.get_password_hash()

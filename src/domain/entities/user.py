@@ -19,7 +19,7 @@ class UserEntity:
     ativo: bool
     excluido: bool
     uuid: str
-    imagem_perfil: str | None = None
+    avatar_url: str | None = None
     _senha_hash: str | None = None
 
 
