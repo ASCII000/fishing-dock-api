@@ -18,7 +18,7 @@ class UserModel(SQLModel, table=True):
     nome: str = Field(max_length=150)
     email: str = Field(max_length=128)
     uuid: str = Field(max_length=36)
-    imagem_perfil: Optional[str] = Field(max_length=300)
+    avatar_url: Optional[str] = Field(max_length=300)
     telefone: str = Field(max_length=11)
     ativo: bool = Field(default=True)
     excluido: bool = Field(default=False)

@@ -63,7 +63,6 @@ def valid_user_data():
         "nome": "Test User",
         "email": "test@example.com",
         "telefone": "11999999999",
-        "imagem_perfil": "https://example.com/image.jpg",
         "senha": "StrongPass123!"
     }
 
@@ -77,6 +76,5 @@ def invalid_user_data():
         "nome": "Test User",
         "email": "invalid-email",
         "telefone": "11999999999",
-        "imagem_perfil": "https://example.com/image.jpg",
         "senha": "weak"
     }
