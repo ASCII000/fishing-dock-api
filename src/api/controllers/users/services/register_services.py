@@ -13,7 +13,7 @@ from utils.converters import convert_bytes_image_to_webp
 from api.dependencies.connections import get_repository
 from database.repositories import UserRepository
 from domain.entities import UserEntity
-from domain.users import RegisterService, LoginService
+from domain.services.users import RegisterService, LoginService
 from ..schemas import UserRequestSchema, UserTokensResponseSchema
 
 
