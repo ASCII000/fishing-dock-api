@@ -8,7 +8,7 @@ import pytest
 import pytest_asyncio
 
 from src.domain.entities import UserEntity
-from src.domain.users import LoginService
+from src.domain.services.users import LoginService
 from .unit.mock import MockUserRepository
 from .unit.mock.mock_users import NOT_EXISTENT_EMAIL, NOT_EXISTENT_UUID, USER_PASSWORD
 

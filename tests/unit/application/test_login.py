@@ -6,21 +6,27 @@ import pytest
 
 from httpx import AsyncClient
 
+from .conftest import create_test_image
+
 
 @pytest.mark.asyncio
-async def test_login_with_valid_credentials(async_client: AsyncClient, valid_user_data: dict):
+async def test_login_with_valid_credentials(
+    async_client: AsyncClient,
+    valid_user_data: dict,
+    valid_user_files: dict,
+):
     """
     Test login with valid credentials
     """
     # First create user
-    await async_client.post("/users", json=valid_user_data)
+    await async_client.post("/users", data=valid_user_data, files=valid_user_files)
 
     # Then login
     response = await async_client.post(
         "/users/security/login",
         params={
             "email": valid_user_data["email"],
-            "password": valid_user_data["senha"]
+            "password": valid_user_data["password"]
         }
     )
 
@@ -49,12 +55,16 @@ async def test_login_with_invalid_email(async_client: AsyncClient):
 
 
 @pytest.mark.asyncio
-async def test_login_with_invalid_password(async_client: AsyncClient, valid_user_data: dict):
+async def test_login_with_invalid_password(
+    async_client: AsyncClient,
+    valid_user_data: dict,
+):
     """
     Test login with invalid password
     """
     # First create user
-    await async_client.post("/users", json=valid_user_data)
+    files = {"avatar": ("test.png", create_test_image(), "image/png")}
+    await async_client.post("/users", data=valid_user_data, files=files)
 
     # Then try login with wrong password
     response = await async_client.post(
@@ -70,18 +80,22 @@ async def test_login_with_invalid_password(async_client: AsyncClient, valid_user
 
 
 @pytest.mark.asyncio
-async def test_refresh_token_with_valid_token(async_client: AsyncClient, valid_user_data: dict):
+async def test_refresh_token_with_valid_token(
+    async_client: AsyncClient,
+    valid_user_data: dict,
+):
     """
     Test refresh token with valid token
     """
     # First create user and login
-    await async_client.post("/users", json=valid_user_data)
+    files = {"avatar": ("test.png", create_test_image(), "image/png")}
+    await async_client.post("/users", data=valid_user_data, files=files)
 
     login_response = await async_client.post(
         "/users/security/login",
         params={
             "email": valid_user_data["email"],
-            "password": valid_user_data["senha"]
+            "password": valid_user_data["password"]
         }
     )
 

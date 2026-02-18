@@ -4,7 +4,7 @@ Tests for user register
 
 import pytest
 
-from src.domain.users import RegisterService
+from src.domain.services.users import RegisterService
 from src.domain.exceptions import DuplicateException
 from src.domain.entities.user import UserEntity
 
