@@ -6,7 +6,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, UploadFile, File, Form
 from ..schemas import UserRequestSchema, UserTokensResponseSchema
-from ..services import RegisterController
+from ..handlers import RegisterController
 
 
 router = APIRouter()

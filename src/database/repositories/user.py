@@ -4,9 +4,10 @@ User repository
 
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
+from sqlalchemy.orm import joinedload
 
 from domain.repositories import IUserRepository
-from domain.entities import UserEntity
+from domain.entities import UserEntity, BlobEntity
 from ..models import UserModel
 
 
@@ -23,7 +24,11 @@ class UserRepository(IUserRepository):
         Get user by email
         """
 
-        statement = select(UserModel).where(UserModel.email == email)
+        statement = (
+            select(UserModel)
+            .where(UserModel.email == email)
+            .options(joinedload(UserModel.avatar_blob))
+        )
         user = await self.session.exec(statement)
         user = user.one_or_none()
         if not user:
@@ -36,7 +41,11 @@ class UserRepository(IUserRepository):
         Get user by uuid
         """
 
-        statement = select(UserModel).where(UserModel.uuid == uuid)
+        statement = (
+            select(UserModel)
+            .where(UserModel.uuid == uuid)
+            .options(joinedload(UserModel.avatar_blob))
+        )
         user = await self.session.exec(statement)
         user = user.one_or_none()
         if not user:
@@ -59,7 +68,11 @@ class UserRepository(IUserRepository):
         """
         Updated user
         """
-        statement = select(UserModel).where(UserModel.id == user.uuid)
+        statement = (
+            select(UserModel)
+            .where(UserModel.id == user.uuid)
+            .options(joinedload(UserModel.avatar_blob))
+        )
         result = await self.session.exec(statement)
         model = result.one()
 
@@ -86,7 +99,17 @@ class UserRepository(IUserRepository):
             excluido=model.excluido,
             telefone=model.telefone,
             uuid=model.uuid,
-            _senha_hash=model.senha
+            avatar=BlobEntity(
+                id=model.avatar_blob_id,
+                link=model.avatar_blob.link,
+                criado_em=model.avatar_blob.criado_em,
+                extensao=model.avatar_blob.extensao,
+                nome=model.avatar_blob.nome,
+                provedor=model.avatar_blob.provedor,
+                provedor_id=model.avatar_blob.provedor_id,
+            ) if model.avatar_blob else None,
+            avatar_blob_id=model.avatar_blob_id,
+            _senha_hash=model.senha,
         )
 
     def _entity_to_model(self, entity: UserEntity) -> UserModel:
@@ -98,9 +121,9 @@ class UserRepository(IUserRepository):
             nome=entity.nome,
             ativo=entity.ativo,
             email=entity.email,
-            avatar_url=entity.avatar_url,
+            avatar_blob_id=entity.avatar_blob_id,
             excluido=entity.excluido,
             telefone=entity.telefone,
             uuid=entity.uuid,
-            senha=entity.get_password_hash()
+            senha=entity.get_password_hash(),
         )

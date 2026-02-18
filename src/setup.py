@@ -128,4 +128,3 @@ store_supa_base = SupabaseStorage(
 
 storage_blob = BlobStorageFactory()
 storage_blob.register(StorageProviders.SUPABASE, store_supa_base)
-

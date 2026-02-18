@@ -50,6 +50,7 @@ class SupabaseStorage(IBlobStorage):
         )
 
         return FileSchema(
+            id=file_name,
             created_at=datetime.now(),
             link=self.get_public_url(file_name),
             name=file_name,

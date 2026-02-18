@@ -11,6 +11,7 @@ class FileSchema(BaseModel):
     """
     Blob storage schema
     """
+    id: str = Field(..., description="File ID")
     name: str = Field(..., description="Filename")
     link: str = Field(..., description="Link")
     created_at: datetime = Field(..., description="Created at")
