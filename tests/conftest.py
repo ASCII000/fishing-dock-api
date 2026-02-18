@@ -8,7 +8,7 @@ import pytest
 import pytest_asyncio
 
 from src.domain.entities import UserEntity
-from src.domain.users import LoginService
+from src.domain.services.users import LoginService
 from .unit.mock import MockUserRepository
 from .unit.mock.mock_users import NOT_EXISTENT_EMAIL, NOT_EXISTENT_UUID, USER_PASSWORD
 
@@ -31,7 +31,6 @@ def mock_existent_user_entity():
         nome="Luiz Souza",
         telefone="11999999999",
         uuid="uuid",
-        imagem_perfil=None,
         ativo=True,
         excluido=False,
     )
@@ -47,7 +46,6 @@ def mock_user_not_existent():
         nome="Luiz Souza",
         telefone="11999999999",
         uuid=NOT_EXISTENT_UUID,
-        imagem_perfil=None,
         ativo=True,
         excluido=False,
     )

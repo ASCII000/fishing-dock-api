@@ -6,6 +6,8 @@ from hashlib import sha256
 
 from dataclasses import dataclass
 
+from .blob import BlobEntity
+
 
 @dataclass
 class UserEntity:
@@ -19,7 +21,8 @@ class UserEntity:
     ativo: bool
     excluido: bool
     uuid: str
-    imagem_perfil: str | None = None
+    avatar_blob_id: int | None = None
+    avatar: BlobEntity | None = None
     _senha_hash: str | None = None
 
 

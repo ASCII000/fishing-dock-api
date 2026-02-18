@@ -6,7 +6,7 @@ from fastapi import APIRouter, Depends
 from fastapi.security.http import HTTPBearer, HTTPAuthorizationCredentials
 
 from ..schemas import UserTokensResponseSchema
-from ..services import LoginController
+from ..handlers import LoginController
 
 
 router = APIRouter()

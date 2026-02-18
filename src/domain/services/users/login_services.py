@@ -59,6 +59,7 @@ class LoginService:
             "tipo": "ACCESS",
             "nome": user.nome,
             "email": user.email,
+            "avatar": user.avatar.link if user.avatar else None,
             "sub": user.uuid,
         }
 

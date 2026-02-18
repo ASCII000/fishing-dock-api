@@ -9,6 +9,7 @@ disable=
     unused-variable,
     arguments-renamed,
     unused-import,
+    wrong-import-position,
 
 [FORMAT]
 max-line-length=300
