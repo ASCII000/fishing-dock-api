@@ -2,19 +2,21 @@
 Entities related to blob
 """
 
+from datetime import datetime
 from typing import Optional
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 
 @dataclass
-class FileEntity:
+class BlobEntity:
     """
     Entity for file
     """
-    id: Optional[int] = None
     provedor: str
     provedor_id: str
-    link: Optional[str]
     nome: str
     extensao: str
+    id: Optional[int] = None
+    link: Optional[str] = None
+    criado_em: Optional[datetime] = field(default=None)

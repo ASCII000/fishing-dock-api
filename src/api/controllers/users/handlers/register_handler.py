@@ -1,5 +1,5 @@
 """
-Register services
+Register handler
 """
 
 import uuid
@@ -11,24 +11,37 @@ from fastapi.concurrency import run_in_threadpool
 from setup import storage_blob, StorageProviders
 from utils.converters import convert_bytes_image_to_webp
 from api.dependencies.connections import get_repository
-from database.repositories import UserRepository
+from database.repositories import UserRepository, BlobRepository
 from domain.entities import UserEntity
 from domain.services.users import RegisterService, LoginService
+from domain.services.blob import BlobService
+from integrations.blob_storage import BlobStorageAdapter
 from ..schemas import UserRequestSchema, UserTokensResponseSchema
 
 
 class RegisterController:
     """
-    User service
+    User registration handler
     """
 
     def __init__(
         self,
-        user_repo: UserRepository = Depends(get_repository(UserRepository))
+        user_repo: UserRepository = Depends(get_repository(UserRepository)),
+        blob_repo: BlobRepository = Depends(get_repository(BlobRepository)),
     ):
         self.user_repo = user_repo
+        self.blob_repo = blob_repo
         self.register_service = RegisterService(user_repo)
         self.login_service = LoginService(user_repo)
+
+        # Create blob service with storage adapter
+        storage = storage_blob.get(StorageProviders.SUPABASE)
+        storage_adapter = BlobStorageAdapter(storage)
+        self.blob_service = BlobService(
+            blob_repository=blob_repo,
+            storage_provider=storage_adapter,
+            provider_name=StorageProviders.SUPABASE.value,
+        )
 
     async def create_new_user(self, user: UserRequestSchema, avatar: UploadFile) -> UserTokensResponseSchema:
         """
@@ -41,15 +54,13 @@ class RegisterController:
             nome=user.nome,
             telefone=user.telefone,
             uuid=str(uuid.uuid4()),
-            avatar_url=None,
+            avatar_blob_id=None,
             ativo=True,
             excluido=False,
         )
 
         if avatar:
 
-            # Upload user avatar
-            blob_provider = storage_blob.get(StorageProviders.SUPABASE)
             supported_types = ("image/png", "image/jpeg", "image/jpg", "image/webp")
 
             if avatar.content_type not in supported_types:
@@ -64,13 +75,13 @@ class RegisterController:
             file_bytes = await avatar.read()
             webp_bytes = await run_in_threadpool(convert_bytes_image_to_webp, file_bytes)
 
-            user_avatar = await blob_provider.upload_archive(
-                file_content=webp_bytes,
+            user_avatar = await self.blob_service.upload(
+                file_name=f"{user_entity.uuid}_avatar",
+                file_bytes=webp_bytes,
                 file_extension="webp",
-                file_name=avatar.filename,
             )
 
-            user_entity.avatar_url = user_avatar.link
+            user_entity.avatar_blob_id = user_avatar.id
 
         # Set user password
         user_entity.set_password(user.senha)

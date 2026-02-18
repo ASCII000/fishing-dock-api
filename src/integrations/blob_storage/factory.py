@@ -1,3 +1,7 @@
+"""
+Factory for blob storage
+"""
+
 from enum import Enum
 
 from .interfaces import IBlobStorage
@@ -5,6 +9,9 @@ from .exceptions import BlobStorageException
 
 
 class StorageProviders(str, Enum):
+    """
+    Providers blob storage
+    """
     SUPABASE = "supabase"
 
 

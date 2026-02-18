@@ -13,3 +13,13 @@ class UserRequestSchema(BaseModel):
     email: str = Field(max_length=128)
     telefone: str = Field(max_length=11)
     senha: str
+
+
+class UserResponseSchema(BaseModel):
+    """
+    User response schema
+    """
+    nome: str
+    email: str
+    avatar: str
+    telefone: str

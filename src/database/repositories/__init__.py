@@ -1,10 +1,12 @@
 """
-Inicialize repositories
+Initialize repositories
 """
 
-from .user import UserRepository, UserEntity
+from .user import UserRepository
+from .blob import BlobRepository
 
 
 __all__ = [
-    "UserRepository", "UserEntity"
+    "UserRepository",
+    "BlobRepository",
 ]
