@@ -104,7 +104,7 @@ class UserRepository(IUserRepository):
 Encapsula a lógica de negócio em serviços especializados, coordenando operações entre diferentes componentes.
 
 ```
-src/domain/users/services/   → Serviços de domínio (regras de negócio)
+src/domain/services/         → Serviços de domínio (regras de negócio)
 src/api/controllers/         → Controllers (orquestração HTTP)
 ```
 
@@ -154,38 +154,39 @@ fishing-dock-api/
 ├── src/
 │   ├── api/                          # Camada de API
 │   │   ├── controllers/              # Controllers por módulo
-│   │   │   └── users/                # Módulo de usuários
+│   │   │   └── <module>/             # Módulo (ex: users)
 │   │   │       ├── routers/          # Definição de rotas
 │   │   │       ├── schemas/          # Schemas Pydantic (entrada/saída)
-│   │   │       └── services/         # Serviços do controller
+│   │   │       └── handlers/         # Handlers de requisição
 │   │   ├── dependencies/             # Injeção de dependências
-│   │   │   ├── connections.py        # Gerenciamento de sessões
-│   │   │   └── lifespan.py           # Ciclo de vida da aplicação
+│   │   ├── middlewares/              # Middlewares e exception handlers
 │   │   └── app.py                    # Instância FastAPI
 │   │
 │   ├── domain/                       # Camada de Domínio
 │   │   ├── entities/                 # Entidades de negócio
+│   │   ├── interfaces/               # Interfaces de provedores externos
 │   │   ├── repositories/             # Interfaces de repositórios
 │   │   ├── exceptions/               # Exceções de domínio
-│   │   └── users/                    # Módulo de usuários (domínio)
-│   │       └── services/             # Serviços de domínio
+│   │   └── services/                 # Serviços de domínio por módulo
 │   │
 │   ├── database/                     # Camada de Dados
 │   │   ├── models.py                 # Modelos ORM (SQLModel)
 │   │   └── repositories/             # Implementações de repositórios
 │   │
+│   ├── integrations/                 # Integrações externas
+│   │   └── <provider>/               # Provedores (ex: blob_storage)
+│   │
 │   ├── utils/                        # Utilitários
-│   │   ├── security.py               # Handler JWT
-│   │   └── validators.py             # Validadores
 │   │
 │   ├── setup.py                      # Configurações globais
 │   └── main.py                       # Ponto de entrada
 │
 ├── tests/                            # Testes
-│   ├── conftest.py                   # Fixtures pytest
 │   └── unit/                         # Testes unitários
+│       ├── application/              # Testes de integração API
 │       ├── domain/                   # Testes de domínio
-│       └── mock/                     # Repositórios mock
+│       ├── integrations/             # Testes de integrações
+│       └── mock/                     # Mocks para testes
 │
 ├── pyproject.toml                    # Dependências (Poetry)
 └── .env.example                      # Template de variáveis
@@ -197,11 +198,14 @@ fishing-dock-api/
 |-----------|------------------|
 | `api/controllers/` | Receber requisições HTTP, validar entrada e formatar resposta |
 | `api/dependencies/` | Gerenciar injeção de dependências e ciclo de vida |
+| `api/middlewares/` | Middlewares e tratamento global de exceções |
 | `domain/entities/` | Representar conceitos de negócio com comportamentos |
+| `domain/interfaces/` | Definir contratos para provedores externos |
 | `domain/repositories/` | Definir contratos para acesso a dados |
-| `domain/*/services/` | Implementar regras de negócio |
+| `domain/services/` | Implementar regras de negócio |
 | `database/models.py` | Mapear tabelas do banco (ORM) |
 | `database/repositories/` | Implementar acesso ao banco de dados |
+| `integrations/` | Implementar integrações com serviços externos |
 | `utils/` | Funcionalidades transversais (JWT, validações) |
 
 ---
@@ -276,30 +280,17 @@ poetry run python src/main.py
 
 ## Testes
 
-O projeto utiliza repositórios mock para testes unitários, isolando a lógica de negócio do banco de dados.
+O projeto utiliza mocks para testes, isolando a lógica de negócio de dependências externas.
 
 ```bash
 # Executar todos os testes
 poetry run pytest
 
-# Com verbose
-poetry run pytest -vv
+# Com cobertura (falha se < 80%)
+poetry run pytest --cov
 
-# Cobertura específica
-poetry run pytest tests/unit/domain/
-```
-
-### Estrutura de Testes
-
-```
-tests/
-├── conftest.py              # Fixtures globais
-└── unit/
-    ├── domain/
-    │   ├── authentication/  # Testes de autenticação
-    │   └── users/           # Testes de usuários
-    └── mock/
-        └── mock_users.py    # MockUserRepository
+# Com relatório detalhado
+poetry run pytest --cov --cov-report=term-missing
 ```
 
 ---
@@ -334,7 +325,7 @@ class IProductRepository(ABC):
 ### 3. Criar Serviço de Domínio
 
 ```python
-# src/domain/products/services/product_service.py
+# src/domain/services/products/product_service.py
 class ProductService:
     def __init__(self, repository: IProductRepository):
         self._repository = repository
@@ -406,14 +397,14 @@ class MockProductRepository(IProductRepository):
 
 - [ ] Entidade de domínio (`domain/entities/`)
 - [ ] Interface do repositório (`domain/repositories/`)
-- [ ] Serviço de domínio (`domain/<module>/services/`)
+- [ ] Serviço de domínio (`domain/services/<module>/`)
 - [ ] Exceções específicas se necessário (`domain/exceptions/`)
 - [ ] Modelo ORM (`database/models.py`)
 - [ ] Implementação do repositório (`database/repositories/`)
 - [ ] Schemas de entrada/saída (`api/controllers/<module>/schemas/`)
-- [ ] Controller e routers (`api/controllers/<module>/`)
+- [ ] Handlers e routers (`api/controllers/<module>/`)
 - [ ] Registrar rotas em `app.py`
-- [ ] Mock repository para testes
+- [ ] Mocks para testes
 - [ ] Testes unitários
 
 ---
