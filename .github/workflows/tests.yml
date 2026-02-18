@@ -8,6 +8,9 @@ jobs:
   tests:
     runs-on: ubuntu-latest
 
+    env:
+      TESTING: "1"
+
     steps:
       - uses: actions/checkout@v4
 
@@ -22,10 +25,6 @@ jobs:
           pip install poetry
           poetry install
 
-      - name: Inject .env Project values
+      - name: Run tests with coverage
         run: |
-          mv .env.example .env
-
-      - name: Run tests
-        run: |
-          poetry run pytest -vv
+          poetry run pytest -vv --cov=src --cov-report=term-missing --cov-fail-under=80

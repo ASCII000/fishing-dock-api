@@ -35,7 +35,7 @@ class MockUserRepository(IUserRepository):
             nome="name",
             telefone="phone",
             uuid=uuid,
-            imagem_perfil=None,
+            avatar_blob_id=None,
             ativo=True,
             excluido=False,
         )
@@ -55,7 +55,7 @@ class MockUserRepository(IUserRepository):
             nome="name",
             telefone="phone",
             uuid="uuid",
-            imagem_perfil=None,
+            avatar_blob_id=None,
             ativo=True,
             excluido=False,
         )

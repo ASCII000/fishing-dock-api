@@ -4,7 +4,7 @@ Test for login
 
 import pytest
 
-from src.domain.users import LoginService
+from src.domain.services.users import LoginService
 from src.domain.exceptions import SecurityError
 
 

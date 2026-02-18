@@ -4,8 +4,8 @@ Test for refresh
 
 import pytest
 
-from src.domain.users import LoginService
-from src.domain.users.services.login_services import UserToken
+from src.domain.services.users import LoginService
+from src.domain.services.users.login_services import UserToken
 from src.domain.exceptions import SecurityError
 
 

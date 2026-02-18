@@ -20,6 +20,9 @@ if "src" not in sys.path:
 from utils.security import SecurityHandler
 from integrations.blob_storage import SupabaseStorage, BlobStorageFactory, StorageProviders
 
+# Check if running in test mode
+TESTING = os.environ.get("TESTING", "0") == "1"
+
 
 T = TypeVar("T")
 
@@ -30,6 +33,41 @@ class Config:
     """
 
     def __init__(self):
+        if TESTING:
+            self._load_test_config()
+        else:
+            self._load_env_config()
+
+    def _load_test_config(self):
+        """
+        Load mock configuration for testing
+        """
+        # API Config
+        self.API_PORT = 8000
+        self.API_HOST = "0.0.0.0"
+        self.API_TITLE = "Test API"
+        self.API_DESCRIPTION = "Test API Description"
+
+        # JWT Config - use proper length key for tests
+        self.JWT_SECRET_KEY = "test-secret-key-minimum-32-bytes!"
+        self.JWT_ACCESS_TOKEN_EXPIRES = 3600
+        self.JWT_REFRESH_TOKEN_EXPIRES = 86400
+
+        # Logger Config
+        self.LOG_FILE_ACTIVE = 0
+
+        # Supabase settings (mock values)
+        self.SUPABASE_URL = "https://mock-supabase.example.com"
+        self.SUPABASE_KEY = "mock-supabase-key"
+        self.SUPABASE_STORAGE_NAME = "mock-storage"
+
+        # Database (in-memory SQLite for tests)
+        self.DATABASE_SQLITE_PATH = "sqlite+aiosqlite:///:memory:"
+
+    def _load_env_config(self):
+        """
+        Load configuration from .env file
+        """
         self.config = dotenv_values(".env")
 
         # API Config
