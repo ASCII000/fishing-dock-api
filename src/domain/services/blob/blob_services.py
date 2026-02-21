@@ -58,5 +58,5 @@ class BlobService:
             extensao=file_extension,
         )
 
-        blob_model = await self.blob_repository.save(blob_entity)
+        blob_model = await self.blob_repository.create(blob_entity)
         return blob_model

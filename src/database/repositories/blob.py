@@ -38,7 +38,7 @@ class BlobRepository(IBlobRepository):
 
         return self._model_to_entity(blob_model)
 
-    async def save(self, file: BlobEntity) -> BlobEntity:
+    async def create(self, file: BlobEntity) -> BlobEntity:
         """
         Method for upload file to storage
 

@@ -25,7 +25,7 @@ class IBlobRepository(ABC):
         """
 
     @abstractmethod
-    async def save(self, file: BlobEntity) -> BlobEntity:
+    async def create(self, file: BlobEntity) -> BlobEntity:
         """
         Method for upload file to storage
 
