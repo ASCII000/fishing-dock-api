@@ -2,9 +2,9 @@
 Posts entity
 """
 
-from dataclasses import dataclass
+from typing import Optional, List
+from dataclasses import dataclass, field
 
-from .topics import TopicEntity
 from .blob import BlobEntity
 
 
@@ -17,5 +17,30 @@ class PostEntity:
     id: int
     title: str
     description: str
-    image: BlobEntity
-    topic: TopicEntity
+    user_id: int
+    reply_post_id: Optional[int]
+    likes_count: int
+    reply_count: int
+    topic_post_id: int
+    post_apppends: List[BlobEntity] = field(default_factory=list)
+    _removed_append_ids: List[int] = field(default_factory=list)
+
+
+    def remove_append(self, append_id: int) -> None:
+        """
+        Remove append
+        """
+        original_length = len(self.post_appends)
+        
+        self.post_appends = [
+            x for x in self.post_appends if x.id != append_id
+        ]
+        
+        if len(self.post_appends) != original_length:
+            self._removed_append_ids.append(append_id)
+    
+    def get_removed_append_ids(self) -> List[int]:
+        """
+        Get removed append ids
+        """
+        return self._removed_append_ids

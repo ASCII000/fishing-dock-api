@@ -2,9 +2,8 @@
 Topics entity
 """
 
+from datetime import datetime
 from dataclasses import dataclass
-
-from .blob import BlobEntity
 
 
 @dataclass
@@ -14,7 +13,9 @@ class TopicEntity:
     """
 
     id: int
-    name: str
+    title: str
     qtd_posts: int
     description: str
-    image: BlobEntity
+    topic_image_id: int
+    created_by_user_id: int
+    created_at: datetime

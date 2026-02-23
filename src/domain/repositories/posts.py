@@ -4,7 +4,7 @@ Topics repository
 
 from abc import ABC, abstractmethod
 
-from ..entities import TopicEntity
+from ..entities import PostEntity
 
 
 class IPostRepository(ABC):
@@ -13,19 +13,19 @@ class IPostRepository(ABC):
     """
 
     @abstractmethod
-    async def create(self, topic: TopicEntity) -> TopicEntity:
+    async def create(self, topic: PostEntity) -> PostEntity:
         """
         Create a new topic
         """
 
     @abstractmethod
-    async def update(self, topic: TopicEntity) -> TopicEntity:
+    async def update(self, topic: PostEntity) -> PostEntity:
         """
         Update a topic
         """
 
     @abstractmethod
-    async def get_by_id(self, topic_id: int) -> TopicEntity:
+    async def get_by_id(self, topic_id: int) -> PostEntity:
         """
         Get topic by id
         """
