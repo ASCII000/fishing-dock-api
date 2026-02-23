@@ -27,3 +27,12 @@ class IBlobStorage(ABC):
             file_extension (str) : File extension
             file_content (bytes) : File content
         """
+
+    @abstractmethod
+    async def delete_archive(self, file_id: str) -> None:
+        """
+        Delete archive
+
+        Args:
+            file_id (str) : File id
+        """

@@ -33,6 +33,12 @@ class SupabaseStorage(IBlobStorage):
         self.supabase_key = supabase_key
         self.supabase_storage_name = supabase_storage_name
 
+    async def delete_archive(self, file_id: str) -> None:
+        """
+        Delete archive
+        """
+        await self._request("DELETE", f"/storage/v1/object/{self.supabase_storage_name}/{file_id}")
+
     async def upload_archive(self, file_name, file_extension, file_content) -> FileSchema:
         """
         Upload archive
