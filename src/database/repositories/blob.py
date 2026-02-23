@@ -38,7 +38,7 @@ class BlobRepository(IBlobRepository):
 
         return self._model_to_entity(blob_model)
 
-    async def save(self, file: BlobEntity) -> BlobEntity:
+    async def create(self, file: BlobEntity) -> BlobEntity:
         """
         Method for upload file to storage
 
@@ -70,13 +70,28 @@ class BlobRepository(IBlobRepository):
             criado_em=model.criado_em,
         )
 
+    async def delete(self, file_id: int) -> None:
+        """
+        Method for delete file from storage
+
+        Args:
+            file_id: int - The file ID to delete
+        """
+        statement = select(BlobModel).where(BlobModel.id == file_id)
+        result = await self.session.exec(statement)
+        blob_model = result.one_or_none()
+
+        if blob_model:
+            await self.session.delete(blob_model)
+            await self.session.flush()
+
     def _entity_to_model(self, entity: BlobEntity) -> BlobModel:
         """
         Convert a BlobEntity to a BlobModel
         """
 
         return BlobModel(
-            id=entity.id,
+            id=entity.id if entity.id else None,
             provedor=entity.provedor,
             provedor_id=entity.provedor_id,
             link=entity.link,

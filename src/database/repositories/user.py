@@ -30,7 +30,7 @@ class UserRepository(IUserRepository):
             .options(joinedload(UserModel.avatar_blob))
         )
         user = await self.session.exec(statement)
-        user = user.one_or_none()
+        user = user.unique().one_or_none()
         if not user:
             return None
 
@@ -47,7 +47,7 @@ class UserRepository(IUserRepository):
             .options(joinedload(UserModel.avatar_blob))
         )
         user = await self.session.exec(statement)
-        user = user.one_or_none()
+        user = user.unique().one_or_none()
         if not user:
             return None
 
@@ -74,7 +74,10 @@ class UserRepository(IUserRepository):
             .options(joinedload(UserModel.avatar_blob))
         )
         result = await self.session.exec(statement)
-        model = result.one()
+        model = result.unique().one_or_none()
+
+        if model is None:
+            return None
 
         model.nome = user.nome
         model.email = user.email
@@ -108,6 +111,7 @@ class UserRepository(IUserRepository):
             )
 
         return UserEntity(
+            id=model.id,
             nome=model.nome,
             ativo=model.ativo,
             email=model.email,

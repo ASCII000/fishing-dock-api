@@ -10,7 +10,7 @@ class BaseDomainException(Exception):
 
     def __init__(self, message: str, *args):
         self.message = message
-        super().__init__(*args)
+        super().__init__(message, *args)
 
 
 class NotFoundException(BaseDomainException):
@@ -29,3 +29,14 @@ class SecurityError(BaseDomainException):
     """
     Exception for security error
     """
+
+
+class BlobException(BaseDomainException):
+    """
+    Exception for blob storage errors
+    """
+
+    def __init__(self, message: str, code: int = 500, detail: any = None, *args):
+        self.code = code
+        self.detail = detail
+        super().__init__(message, *args)

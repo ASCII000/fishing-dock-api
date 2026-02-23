@@ -17,6 +17,7 @@ class MockBlobStorage(IBlobStorage):
 
     def __init__(self):
         self.uploaded_files: dict[str, bytes] = {}
+        self.deleted_files: list[str] = []
         self.upload_count = 0
 
     async def upload_archive(
@@ -39,6 +40,12 @@ class MockBlobStorage(IBlobStorage):
             created_at=datetime.now(),
         )
 
+    async def delete_archive(self, file_id: str) -> None:
+        """
+        Mock delete archive
+        """
+        self.deleted_files.append(file_id)
+
 
 class MockBlobStorageProvider(IBlobStorageProvider):
     """
@@ -47,6 +54,7 @@ class MockBlobStorageProvider(IBlobStorageProvider):
 
     def __init__(self):
         self.uploaded_files: dict[str, bytes] = {}
+        self.deleted_files: list[str] = []
         self.upload_count = 0
 
     async def upload(
@@ -68,3 +76,9 @@ class MockBlobStorageProvider(IBlobStorageProvider):
             link=f"https://mock-storage.example.com/{full_name}",
             created_at=datetime.now(),
         )
+
+    async def delete(self, file_id: str) -> None:
+        """
+        Mock delete
+        """
+        self.deleted_files.append(file_id)

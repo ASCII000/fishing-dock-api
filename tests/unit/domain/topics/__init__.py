@@ -1,0 +1,3 @@
+"""
+Topics domain tests
+"""

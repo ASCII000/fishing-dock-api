@@ -25,7 +25,7 @@ class IBlobRepository(ABC):
         """
 
     @abstractmethod
-    async def save(self, file: BlobEntity) -> BlobEntity:
+    async def create(self, file: BlobEntity) -> BlobEntity:
         """
         Method for upload file to storage
 
@@ -34,4 +34,13 @@ class IBlobRepository(ABC):
 
         Returns:
             BlobEntity: The uploaded file entity
+        """
+
+    @abstractmethod
+    async def delete(self, file_id: int) -> None:
+        """
+        Method for delete file from storage
+
+        Args:
+            file_id: int - The file ID to delete
         """

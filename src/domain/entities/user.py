@@ -21,6 +21,7 @@ class UserEntity:
     ativo: bool
     excluido: bool
     uuid: str
+    id: int | None = None
     avatar_blob_id: int | None = None
     avatar: BlobEntity | None = None
     _senha_hash: str | None = None
