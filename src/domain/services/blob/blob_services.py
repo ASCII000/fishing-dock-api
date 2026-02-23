@@ -3,7 +3,7 @@ Blob service
 """
 
 from ...entities.blob import BlobEntity
-from ...exceptions import BaseDomainException
+from ...exceptions import BlobException
 from ...interfaces import IBlobStorageProvider
 from ...repositories.blob import IBlobRepository
 
@@ -45,9 +45,11 @@ class BlobService:
             )
 
         except Exception as err:
-            raise BaseDomainException(
-                "Error uploading file to storage"
-            ) from err
+            # Preserve error details if available
+            code = getattr(err, 'code', 500)
+            detail = getattr(err, 'detail', str(err))
+            message = getattr(err, 'message', "Error uploading file to storage")
+            raise BlobException(message, code, detail) from err
 
         # Save file information to database
         blob_entity = BlobEntity(
@@ -60,3 +62,27 @@ class BlobService:
 
         blob_model = await self.blob_repository.create(blob_entity)
         return blob_model
+
+    async def delete(self, blob_id: int) -> None:
+        """
+        Delete file from storage and database
+        """
+        # Get file info from database
+        blob = await self.blob_repository.get_file(blob_id)
+
+        if not blob:
+            return
+
+        try:
+            # Delete from cloud storage
+            await self.storage_provider.delete(blob.provedor_id)
+
+        except Exception as err:
+            # Preserve error details if available
+            code = getattr(err, 'code', 500)
+            detail = getattr(err, 'detail', str(err))
+            message = getattr(err, 'message', "Error deleting file from storage")
+            raise BlobException(message, code, detail) from err
+
+        # Delete from database
+        await self.blob_repository.delete(blob_id)

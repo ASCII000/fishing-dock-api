@@ -31,6 +31,7 @@ class MockUserRepository(IUserRepository):
             return None
 
         user = UserEntity(
+            id=1,
             email="email",
             nome="name",
             telefone="phone",

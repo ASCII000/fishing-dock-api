@@ -43,3 +43,12 @@ class IBlobStorageProvider(ABC):
         Returns:
             BlobUploadResult with the uploaded file info
         """
+
+    @abstractmethod
+    async def delete(self, file_id: str) -> None:
+        """
+        Delete a file from the storage provider.
+
+        Args:
+            file_id: ID of the file to delete
+        """

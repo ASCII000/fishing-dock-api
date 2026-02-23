@@ -30,15 +30,15 @@ class PostEntity:
         """
         Remove append
         """
-        original_length = len(self.post_appends)
-        
-        self.post_appends = [
-            x for x in self.post_appends if x.id != append_id
+        original_length = len(self.post_apppends)
+
+        self.post_apppends = [
+            x for x in self.post_apppends if x.id != append_id
         ]
-        
-        if len(self.post_appends) != original_length:
+
+        if len(self.post_apppends) != original_length:
             self._removed_append_ids.append(append_id)
-    
+
     def get_removed_append_ids(self) -> List[int]:
         """
         Get removed append ids

@@ -39,3 +39,9 @@ class BlobStorageAdapter(IBlobStorageProvider):
             link=result.link,
             created_at=result.created_at,
         )
+
+    async def delete(self, file_id: str) -> None:
+        """
+        Delete a file from the storage provider.
+        """
+        await self._storage.delete_archive(file_id)

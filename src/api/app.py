@@ -8,6 +8,7 @@ from setup import config
 from .dependencies.lifespan import lifespan
 from .middlewares import setup_middlewares
 from .controllers.users import setup_users_controllers
+from .controllers.topics import setup_topics_controllers
 
 
 app = FastAPI(
@@ -19,3 +20,4 @@ app = FastAPI(
 
 setup_middlewares(app)
 setup_users_controllers(app)
+setup_topics_controllers(app)

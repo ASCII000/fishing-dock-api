@@ -70,7 +70,7 @@ class PostModel(SQLModel, table=True):
     resposta_post: Optional["PostModel"] = Relationship(
         sa_relationship_kwargs={"remote_side": "PostModel.id"}
     )
-    anexos: List[PostsAppendModel] = Relationship(back_populates="post")
+    anexos: List["PostsAppendModel"] = Relationship(back_populates="post")
     topico_post_id: int = Field(foreign_key="topicos.id")
     gostei_contador: int = Field(default=0, sa_column=Column(Integer, nullable=False))
     resposta_contador: int = Field(default=0, sa_column=Column(Integer, nullable=False))
